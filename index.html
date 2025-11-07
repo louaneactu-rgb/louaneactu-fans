@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Louane Actu — Espace Fans 💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Poppins",sans-serif;
+  color:#1f1f1f;
+  overflow-x:hidden;
+  background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ede7f6);
+  background-size:400% 400%;
+  animation:gradientShift 20s ease infinite;
+  position:relative;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* --- MENU LATÉRAL --- */
+.menu-toggle{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  width:56px;
+  height:56px;
+  font-size:26px;
+  cursor:pointer;
+  z-index:1100;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 4px 20px rgba(171,71,188,0.6),0 0 40px rgba(171,71,188,0.3);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  animation:pulse 2s ease-in-out infinite;
+  backdrop-filter:blur(10px);
+  border:2px solid rgba(255,255,255,0.3);
+}
+.menu-toggle:hover{
+  transform:scale(1.15) rotate(15deg);
+  box-shadow:0 6px 30px rgba(171,71,188,1),0 0 50px rgba(171,71,188,0.5);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+.menu-toggle.active{
+  transform:rotate(180deg);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 4px 20px rgba(171,71,188,0.6),0 0 40px rgba(171,71,188,0.3)}
+  50%{box-shadow:0 6px 35px rgba(171,71,188,1),0 0 60px rgba(171,71,188,0.6)}
+}
+.menu{
+  position:fixed;
+  top:0;left:-280px;
+  width:280px;height:100%;
+  background:linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,240,255,0.98));
+  backdrop-filter:blur(20px);
+  box-shadow:4px 0 40px rgba(171,71,188,0.4);
+  transition:left 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  z-index:1000;
+  padding-top:90px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border-right:3px solid rgba(171,71,188,0.2);
+}
+.menu::before{
+  content:"";
+  position:absolute;
+  top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.3),transparent);
+  transition:left 0.7s;
+}
+.menu.active::before{
+  animation:shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer{
+  0%{left:-100%}
+  50%{left:100%}
+  100%{left:100%}
+}
+.menu::after{
+  content:"💜";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:120px;
+  opacity:0.08;
+  pointer-events:none;
+  z-index:-1;
+}
+.menu.active::after{
+  animation:sparkleHeart 2s ease-in-out infinite;
+}
+@keyframes sparkleHeart{
+  0%,100%{
+    filter:drop-shadow(0 0 5px rgba(171,71,188,0.3));
+    transform:translate(-50%,-50%) scale(1);
+  }
+  25%{
+    filter:drop-shadow(0 0 20px rgba(171,71,188,0.8)) drop-shadow(0 0 40px rgba(171,71,188,0.6));
+    transform:translate(-50%,-50%) scale(1.05);
+  }
+  50%{
+    filter:drop-shadow(0 0 30px rgba(171,71,188,1)) drop-shadow(0 0 60px rgba(171,71,188,0.8));
+    transform:translate(-50%,-50%) scale(1.1);
+  }
+  75%{
+    filter:drop-shadow(0 0 20px rgba(171,71,188,0.8)) drop-shadow(0 0 40px rgba(171,71,188,0.6));
+    transform:translate(-50%,-50%) scale(1.05);
+  }
+}
+.menu a{
+  display:block;
+  padding:14px 24px;
+  color:#6a1b9a;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  position:relative;
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  overflow:hidden;
+  border-radius:12px;
+  margin:4px 12px;
+  opacity:0;
+  transform:translateX(-30px);
+}
+.menu.active a{
+  animation:slideInMenuItem 0.5s ease forwards;
+}
+.menu.active a:nth-child(1){animation-delay:0.05s}
+.menu.active a:nth-child(2){animation-delay:0.1s}
+.menu.active a:nth-child(3){animation-delay:0.15s}
+.menu.active a:nth-child(4){animation-delay:0.2s}
+.menu.active a:nth-child(5){animation-delay:0.25s}
+.menu.active a:nth-child(6){animation-delay:0.3s}
+.menu.active .menu-section:nth-child(4){animation:slideInMenuItem 0.5s ease forwards;animation-delay:0.05s}
+.menu.active .menu-section:nth-child(5){animation:slideInMenuItem 0.5s ease forwards;animation-delay:0.15s}
+.menu.active .menu-section:nth-child(6){animation:slideInMenuItem 0.5s ease forwards;animation-delay:0.2s}
+.menu.active .menu-section:nth-child(7){animation:slideInMenuItem 0.5s ease forwards;animation-delay:0.25s}
+@keyframes slideInMenuItem{
+  from{
+    opacity:0;
+    transform:translateX(-30px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+.menu a::before{
+  content:"✨";
+  position:absolute;
+  left:-30px;
+  opacity:0;
+  transition:all 0.3s ease;
+}
+.menu a:hover{
+  background:linear-gradient(135deg,rgba(206,147,216,0.3),rgba(171,71,188,0.2));
+  padding-left:40px;
+  transform:translateX(5px) scale(1.02);
+  color:#7b1fa2;
+  box-shadow:0 4px 15px rgba(171,71,188,0.2);
+  animation:menuItemPulse 0.6s ease;
+}
+@keyframes menuItemPulse{
+  0%{box-shadow:0 4px 15px rgba(171,71,188,0.2)}
+  50%{box-shadow:0 6px 25px rgba(171,71,188,0.5)}
+  100%{box-shadow:0 4px 15px rgba(171,71,188,0.2)}
+}
+.menu a:hover::before{
+  left:15px;
+  opacity:1;
+}
+.menu.active{left:0}
+
+.menu-section{
+  position:relative;
+  opacity:0;
+  transform:translateX(-30px);
+}
+.menu.active .menu-section{
+  animation:slideInMenuItem 0.5s ease forwards;
+}
+.menu-parent{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+.menu-parent::after{
+  content:"▶";
+  font-size:10px;
+  transition:transform 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  margin-right:5px;
+}
+.menu-parent.active::after{
+  transform:rotate(90deg);
+}
+.menu-parent:hover::after{
+  transform:scale(1.3);
+  animation:arrowBounce 0.6s ease infinite;
+}
+@keyframes arrowBounce{
+  0%,100%{transform:translateX(0) scale(1.3)}
+  50%{transform:translateX(3px) scale(1.3)}
+}
+.submenu{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.5s cubic-bezier(0.68,-0.55,0.265,1.55),opacity 0.4s ease;
+  background:linear-gradient(135deg,rgba(206,147,216,0.15),rgba(171,71,188,0.08));
+  border-radius:12px;
+  margin:6px 16px;
+  border-left:3px solid rgba(171,71,188,0.3);
+  opacity:0;
+}
+.submenu.active{
+  max-height:500px;
+  opacity:1;
+  animation:submenuSlideIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+@keyframes submenuSlideIn{
+  from{
+    transform:translateY(-10px);
+    opacity:0;
+  }
+  to{
+    transform:translateY(0);
+    opacity:1;
+  }
+}
+.submenu a{
+  padding:12px 20px 12px 34px;
+  font-size:14px;
+  font-weight:500;
+  margin:4px 8px;
+  opacity:1;
+  transform:none;
+}
+.submenu.active a{
+  animation:submenuItemFadeIn 0.4s ease forwards;
+}
+.submenu.active a:nth-child(1){animation-delay:0.1s}
+.submenu.active a:nth-child(2){animation-delay:0.15s}
+.submenu.active a:nth-child(3){animation-delay:0.2s}
+.submenu.active a:nth-child(4){animation-delay:0.25s}
+@keyframes submenuItemFadeIn{
+  from{
+    opacity:0;
+    transform:translateX(-15px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+.submenu a:hover{
+  padding-left:48px;
+}
+
+/* --- Cœurs flottants --- */
+.heart-bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  overflow:hidden;z-index:0;pointer-events:none;
+}
+.heart{
+  position:absolute;bottom:-10vh;
+  color:rgba(255,255,255,0.7);
+  font-size:24px;animation:floatUp 12s linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(0.8);opacity:0}
+  20%{opacity:1}
+  100%{transform:translateY(-110vh) scale(1.2);opacity:0}
+}
+.heart:nth-child(1){left:10%;animation-delay:0s}
+.heart:nth-child(2){left:25%;animation-delay:2s}
+.heart:nth-child(3){left:40%;animation-delay:4s}
+.heart:nth-child(4){left:60%;animation-delay:6s}
+.heart:nth-child(5){left:75%;animation-delay:8s}
+.heart:nth-child(6){left:90%;animation-delay:10s}
+
+/* --- Intro --- */
+#intro-screen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(135deg,#b39ddb,#ce93d8,#ede7f6);
+  display:flex;justify-content:center;align-items:center;
+  z-index:900;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:2s;
+}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+.intro-text{
+  font-family:"Playfair Display",serif;font-size:50px;color:#fff;
+  text-shadow:0 0 20px rgba(171,71,188,0.8);
+  border-right:2px solid rgba(255,255,255,0.8);
+  white-space:nowrap;overflow:hidden;width:0;
+  animation:typing 2s steps(20,end) forwards,blink 0.8s infinite;
+}
+@keyframes typing{to{width:300px}}
+@keyframes blink{50%{border-color:transparent}}
+
+/* --- Sections --- */
+section{text-align:center;padding:80px 20px;position:relative;z-index:2}
+h1,h2{font-family:"Playfair Display",serif;color:#6a1b9a;text-shadow:0 0 15px rgba(171,71,188,0.2)}
+.btn{
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  padding:16px 40px;border-radius:50px;
+  color:#fff;font-weight:600;
+  box-shadow:0 6px 25px rgba(171,71,188,0.5),0 0 40px rgba(171,71,188,0.2);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  margin-top:40px;display:inline-block;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  border:2px solid rgba(255,255,255,0.2);
+}
+.btn:hover{
+  transform:scale(1.08) translateY(-2px);
+  box-shadow:0 8px 35px rgba(171,71,188,0.7),0 0 60px rgba(171,71,188,0.4);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+.btn::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:translate(-50%,-50%);
+  transition:width 0.6s,height 0.6s;
+}
+.btn:hover::before{
+  width:300px;height:300px;
+}
+
+/* --- Formulaires --- */
+form{
+  display:flex;flex-direction:column;gap:18px;
+  max-width:480px;margin:30px auto;padding:48px;
+  border-radius:30px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.6),rgba(248,240,255,0.5));
+  box-shadow:0 10px 50px rgba(171,71,188,0.2),0 0 80px rgba(171,71,188,0.1);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(255,255,255,0.5);
+}
+label{text-align:left;color:#6a1b9a;font-weight:500}
+input,textarea{
+  padding:14px 18px;border:2px solid rgba(171,71,188,0.2);border-radius:16px;
+  background:rgba(255,255,255,0.9);
+  font-family:"Poppins",sans-serif;
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  font-size:15px;
+}
+input:focus,textarea:focus{
+  outline:none;
+  border-color:#ab47bc;
+  background:rgba(255,255,255,1);
+  box-shadow:0 4px 20px rgba(171,71,188,0.3),0 0 30px rgba(171,71,188,0.1);
+  transform:scale(1.02);
+}
+button{
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  border:2px solid rgba(255,255,255,0.2);border-radius:50px;padding:16px 24px;color:#fff;
+  font-weight:600;cursor:pointer;
+  box-shadow:0 6px 25px rgba(171,71,188,0.5),0 0 40px rgba(171,71,188,0.2);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  font-size:16px;
+  position:relative;
+  overflow:hidden;
+}
+button:hover{
+  transform:scale(1.05) translateY(-2px);
+  box-shadow:0 8px 35px rgba(171,71,188,0.7),0 0 60px rgba(171,71,188,0.4);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+button::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:translate(-50%,-50%);
+  transition:width 0.6s,height 0.6s;
+}
+button:hover::before{
+  width:300px;height:300px;
+}
+.checkbox-group{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:10px;}
+
+/* --- Mur d’amour --- */
+.wall-container{
+  max-width:700px;height:500px;margin:40px auto;overflow:hidden;
+}
+.wall{
+  display:flex;flex-direction:column;gap:20px;
+  animation:scrollUp 20s linear infinite;
+}
+@keyframes scrollUp{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-50%)}
+}
+.message{
+  width:80%;margin:0 auto;padding:24px;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.85),rgba(248,240,255,0.8));
+  box-shadow:0 10px 35px rgba(106,27,154,0.15),0 0 60px rgba(171,71,188,0.05);
+  display:flex;justify-content:space-between;align-items:center;
+  opacity:0;
+  animation:fadeInMessage 1s ease forwards;
+  border:2px solid rgba(255,255,255,0.6);
+  backdrop-filter:blur(15px);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+.message:hover{
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 12px 40px rgba(106,27,154,0.25),0 0 80px rgba(171,71,188,0.1);
+}
+@keyframes fadeInMessage{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.message:nth-child(1){animation-delay:0.1s}
+.message:nth-child(2){animation-delay:0.2s}
+.message:nth-child(3){animation-delay:0.3s}
+.message:nth-child(4){animation-delay:0.4s}
+.message:nth-child(5){animation-delay:0.5s}
+.message:nth-child(6){animation-delay:0.6s}
+.message-content{flex:1}
+.message strong{color:#6a1b9a;display:block;margin-bottom:5px}
+.heart-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:24px;padding:5px 10px;
+  transition:transform 0.2s;filter:grayscale(100%);
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.heart-btn:hover{transform:scale(1.2)}
+.heart-btn.liked{filter:grayscale(0%);animation:heartPop 0.3s ease}
+@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.heart-count{font-size:12px;color:#6a1b9a;font-weight:600}
+
+/* --- Polaroids --- */
+.polaroid-grid{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:25px;
+  max-width:900px;margin:40px auto;
+}
+.polaroid{
+  background:linear-gradient(135deg,#fff,#fefefe);
+  padding:12px 12px 30px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.15),0 0 50px rgba(171,71,188,0.1);
+  border-radius:8px;width:180px;transform:rotate(var(--angle));
+  transition:all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  border:1px solid rgba(171,71,188,0.1);
+}
+.polaroid:hover{
+  transform:scale(1.12) rotate(0deg) translateY(-8px);
+  box-shadow:0 20px 50px rgba(171,71,188,0.35),0 0 80px rgba(171,71,188,0.2);
+  border-color:rgba(171,71,188,0.3);
+}
+.polaroid img{width:100%;border-radius:3px;margin-bottom:10px}
+.polaroid p{font-size:14px;color:#555}
+
+/* --- Carte --- */
+iframe{
+  width:90%;max-width:700px;height:500px;border:none;border-radius:24px;
+  box-shadow:0 12px 50px rgba(171,71,188,0.25),0 0 80px rgba(171,71,188,0.15);
+  transition:all 0.4s ease;
+}
+iframe:hover{
+  transform:scale(1.02);
+  box-shadow:0 16px 60px rgba(171,71,188,0.35),0 0 100px rgba(171,71,188,0.2);
+}
+
+/* --- Logo branding --- */
+.logo-branding{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  z-index:1100;
+  transition:all 0.3s ease;
+  animation:logoFloat 3s ease-in-out infinite;
+  filter:drop-shadow(0 3px 10px rgba(171,71,188,0.3));
+}
+.logo-branding:hover{
+  transform:scale(1.08);
+  filter:drop-shadow(0 5px 20px rgba(171,71,188,0.5));
+}
+.logo-branding img{
+  display:block;
+  height:40px;
+  width:auto;
+}
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+
+/* --- Footer --- */
+footer{text-align:center;margin:60px 0 20px;color:#555;font-size:14px}
+footer a{color:#6a1b9a}
+</style>
+</head>
+<body>
+
+<!-- Menu -->
+<button class="menu-toggle" id="menuButton">💜</button>
+<div class="menu" id="sideMenu">
+  <a href="index.html">Accueil</a>
+  <a href="a-propos.html">À propos</a>
+  <a href="notre-communaute.html">Notre communauté</a>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="contenu">
+      <span>Contenu</span>
+    </div>
+    <div class="submenu" id="submenu-contenu">
+      <a href="index.html#mur">Mur d'Amour</a>
+      <a href="index.html#galerie">Vos moments</a>
+      <a href="vos-creations.html">Vos créations</a>
+      <a href="anniversaires.html">Anniversaires</a>
+      <a href="watchout.html">Watchout Mag</a>
+    </div>
+  </div>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="participer">
+      <span>Participer</span>
+    </div>
+    <div class="submenu" id="submenu-participer">
+      <a href="index.html#mot">Écrire un mot</a>
+      <a href="index.html#photo">Envoyer une photo</a>
+      <a href="boite-a-idees.html">Boîte à Idées</a>
+    </div>
+  </div>
+  
+  <a href="index.html#map">Fan Map</a>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="compte">
+      <span>Compte</span>
+    </div>
+    <div class="submenu" id="submenu-compte">
+      <a href="connexion.html">Connexion</a>
+      <a href="inscription.html">Inscription</a>
+    </div>
+  </div>
+  
+  <a href="secret.html">🔒 Page Secrète</a>
+  
+  <a href="politique.html">Politique de confidentialité</a>
+</div>
+
+<!-- Logo branding -->
+<div class="logo-branding">
+  <img src="logo.svg" alt="Louane Actu">
+</div>
+
+<!-- Cœurs flottants -->
+<div class="heart-bg">
+  <div class="heart">💜</div><div class="heart">💜</div><div class="heart">💜</div>
+  <div class="heart">💜</div><div class="heart">💜</div><div class="heart">💜</div>
+</div>
+
+<!-- Intro -->
+<div id="intro-screen"><div class="intro-text">Louane Actu</div></div>
+
+<section class="intro">
+  <h1>Espace Fans 💜</h1>
+  <p>Un cocon d’amour et de souvenirs partagés entre Louane et sa communauté.</p>
+  <a href="#mur" class="btn">Entrer dans l’espace</a>
+</section>
+
+<section id="mur">
+  <h2>Le Mur d’Amour 💌</h2>
+  <div class="wall-container">
+    <div class="wall">
+      <div class="message">
+        <div class="message-content"><strong>Élodie :</strong> Merci pour ta musique, elle illumine mes journées 💕</div>
+        <button class="heart-btn" data-msg="1"><span>💜</span><span class="heart-count">0</span></button>
+      </div>
+      <div class="message">
+        <div class="message-content"><strong>Lucas :</strong> Ton concert à Lille restera gravé pour toujours 🌟</div>
+        <button class="heart-btn" data-msg="2"><span>💜</span><span class="heart-count">0</span></button>
+      </div>
+      <div class="message">
+        <div class="message-content"><strong>Sarah :</strong> Tes chansons m'ont aidée à grandir. Merci Louane 💜</div>
+        <button class="heart-btn" data-msg="3"><span>💜</span><span class="heart-count">0</span></button>
+      </div>
+      <div class="message">
+        <div class="message-content"><strong>Camille :</strong> Tu es une source d'inspiration infinie ✨</div>
+        <button class="heart-btn" data-msg="4"><span>💜</span><span class="heart-count">0</span></button>
+      </div>
+      <div class="message">
+        <div class="message-content"><strong>Thomas :</strong> Ta voix, ta douceur, ton énergie : tout est parfait 💫</div>
+        <button class="heart-btn" data-msg="5"><span>💜</span><span class="heart-count">0</span></button>
+      </div>
+      <div class="message">
+        <div class="message-content"><strong>Claire :</strong> Ta voix me fait rêver chaque jour 💜</div>
+        <button class="heart-btn" data-msg="6"><span>💜</span><span class="heart-count">0</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mot">
+  <h2>Écrire un mot à Louane 💬</h2>
+  <form name="mot-louane" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="merci-mot.html">
+    <p hidden><label>Ne pas remplir : <input name="bot-field"></label></p>
+    <input type="hidden" name="form-name" value="mot-louane">
+    <label for="prenom">Prénom *</label>
+    <input type="text" id="prenom" name="prenom" required>
+    <label for="message">Ton message *</label>
+    <textarea id="message" name="message" rows="4" required></textarea>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="consentement" required> J'accepte la <a href="politique.html" target="_blank" style="color:#7b1fa2;">politique de confidentialité</a>.</label>
+    </div>
+    <button type="submit">Envoyer 💜</button>
+  </form>
+</section>
+
+<section id="photo">
+  <h2>Envoyer ta photo 📷</h2>
+  <form name="photo-fan" method="POST" data-netlify="true" enctype="multipart/form-data" action="merci-photo.html">
+    <input type="hidden" name="form-name" value="photo-fan">
+    <label for="prenom2">Prénom *</label>
+    <input type="text" id="prenom2" name="prenom" required>
+    <label for="date-naissance">Date de naissance *</label>
+    <input type="date" id="date-naissance" name="date-naissance" required>
+    <label for="image">Ta photo *</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+    <button type="submit">Envoyer ma photo 💜</button>
+  </form>
+</section>
+
+<section id="galerie">
+  <h2>Vos moments 📸</h2>
+  <div class="polaroid-grid">
+    <div class="polaroid" style="--angle:-5deg"><img src="photo1.jpg"><p>Marie</p></div>
+    <div class="polaroid" style="--angle:6deg"><img src="photo2.jpg"><p>Lucas</p></div>
+    <div class="polaroid" style="--angle:-8deg"><img src="photo3.jpg"><p>Inès</p></div>
+  </div>
+</section>
+
+<section id="map">
+  <h2>🌍 La Fan Map</h2>
+  <p style="font-style:italic;font-size:20px;margin-bottom:30px;color:#7b1fa2;">Découvrez où bat le cœur des fans 💜</p>
+  <iframe src="https://www.google.com/maps/d/u/1/embed?mid=1Z91QPIGZoJ4c1N1C-_Vdzt77lI0lg9c&ehbc=2E312F"></iframe>
+</section>
+
+<footer>
+  Créé avec amour par Louane Actu 💜 — Pour la communauté, toujours.<br>
+  <a href="politique.html">Politique de confidentialité</a>
+</footer>
+
+<script src="./node_modules/@auth0/auth0-spa-js/dist/auth0-spa-js.production.js"></script>
+<script src="./auth-config.js"></script>
+<script>
+document.getElementById("menuButton").addEventListener("click",function(){
+  const menu = document.getElementById("sideMenu");
+  const button = document.getElementById("menuButton");
+  menu.classList.toggle("active");
+  button.classList.toggle("active");
+});
+
+const menuParents=document.querySelectorAll(".menu-parent");
+menuParents.forEach(parent=>{
+  parent.addEventListener("click",function(){
+    const submenuId="submenu-"+this.getAttribute("data-submenu");
+    const submenu=document.getElementById(submenuId);
+    this.classList.toggle("active");
+    submenu.classList.toggle("active");
+  });
+});
+
+const heartBtns=document.querySelectorAll(".heart-btn");
+const likes=JSON.parse(localStorage.getItem("wallLikes")||"{}");
+const userLikes=JSON.parse(localStorage.getItem("userLikes")||"[]");
+
+heartBtns.forEach(btn=>{
+  const msgId=btn.getAttribute("data-msg");
+  const count=likes[msgId]||0;
+  btn.querySelector(".heart-count").textContent=count;
+  
+  if(userLikes.includes(msgId)){
+    btn.classList.add("liked");
+  }
+  
+  btn.addEventListener("click",function(){
+    if(userLikes.includes(msgId)){
+      const idx=userLikes.indexOf(msgId);
+      userLikes.splice(idx,1);
+      likes[msgId]=(likes[msgId]||1)-1;
+      btn.classList.remove("liked");
+    }else{
+      userLikes.push(msgId);
+      likes[msgId]=(likes[msgId]||0)+1;
+      btn.classList.add("liked");
+    }
+    btn.querySelector(".heart-count").textContent=likes[msgId];
+    localStorage.setItem("wallLikes",JSON.stringify(likes));
+    localStorage.setItem("userLikes",JSON.stringify(userLikes));
+  });
+});
+</script>
+</body>
+</html>

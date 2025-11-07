@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boîte à Idées — Louane Actu 💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Poppins",sans-serif;
+  color:#1f1f1f;
+  overflow-x:hidden;
+  background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ede7f6);
+  background-size:400% 400%;
+  animation:gradientShift 20s ease infinite;
+  position:relative;
+  min-height:100vh;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.menu-toggle{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  width:56px;
+  height:56px;
+  font-size:26px;
+  cursor:pointer;
+  z-index:1100;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 4px 20px rgba(171,71,188,0.6),0 0 40px rgba(171,71,188,0.3);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  animation:pulse 2s ease-in-out infinite;
+  backdrop-filter:blur(10px);
+  border:2px solid rgba(255,255,255,0.3);
+}
+.menu-toggle:hover{
+  transform:scale(1.15) rotate(15deg);
+  box-shadow:0 6px 30px rgba(171,71,188,1),0 0 50px rgba(171,71,188,0.5);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 4px 20px rgba(171,71,188,0.6),0 0 40px rgba(171,71,188,0.3)}
+  50%{box-shadow:0 6px 35px rgba(171,71,188,1),0 0 60px rgba(171,71,188,0.6)}
+}
+.menu{
+  position:fixed;
+  top:0;left:-280px;
+  width:280px;height:100%;
+  background:linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,240,255,0.98));
+  backdrop-filter:blur(20px);
+  box-shadow:4px 0 40px rgba(171,71,188,0.4);
+  transition:left 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  z-index:1000;
+  padding-top:90px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border-right:3px solid rgba(171,71,188,0.2);
+}
+.menu::before{
+  content:"";
+  position:absolute;
+  top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.3),transparent);
+  transition:left 0.7s;
+}
+.menu.active::before{
+  animation:shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer{
+  0%{left:-100%}
+  50%{left:100%}
+  100%{left:100%}
+}
+.menu::after{
+  content:"💜";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:120px;
+  opacity:0.08;
+  pointer-events:none;
+  z-index:-1;
+}
+.menu.active::after{
+  animation:sparkleHeart 2s ease-in-out infinite;
+}
+@keyframes sparkleHeart{
+  0%,100%{
+    filter:drop-shadow(0 0 5px rgba(171,71,188,0.3));
+    transform:translate(-50%,-50%) scale(1);
+  }
+  25%{
+    filter:drop-shadow(0 0 20px rgba(171,71,188,0.8)) drop-shadow(0 0 40px rgba(171,71,188,0.6));
+    transform:translate(-50%,-50%) scale(1.05);
+  }
+  50%{
+    filter:drop-shadow(0 0 30px rgba(171,71,188,1)) drop-shadow(0 0 60px rgba(171,71,188,0.8));
+    transform:translate(-50%,-50%) scale(1.1);
+  }
+  75%{
+    filter:drop-shadow(0 0 20px rgba(171,71,188,0.8)) drop-shadow(0 0 40px rgba(171,71,188,0.6));
+    transform:translate(-50%,-50%) scale(1.05);
+  }
+}
+.menu a{
+  display:block;
+  padding:14px 24px;
+  color:#6a1b9a;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  position:relative;
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  overflow:hidden;
+  border-radius:12px;
+  margin:4px 12px;
+}
+.menu a::before{
+  content:"✨";
+  position:absolute;
+  left:-30px;
+  opacity:0;
+  transition:all 0.3s ease;
+}
+.menu a:hover{
+  background:linear-gradient(135deg,rgba(206,147,216,0.3),rgba(171,71,188,0.2));
+  padding-left:40px;
+  transform:translateX(5px) scale(1.02);
+  color:#7b1fa2;
+  box-shadow:0 4px 15px rgba(171,71,188,0.2);
+}
+.menu a:hover::before{
+  left:15px;
+  opacity:1;
+}
+.menu.active{left:0}
+
+.menu-section{
+  position:relative;
+}
+.menu-parent{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+.menu-parent::after{
+  content:"▶";
+  font-size:10px;
+  transition:transform 0.3s ease;
+  margin-right:5px;
+}
+.menu-parent.active::after{
+  transform:rotate(90deg);
+}
+.submenu{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  background:linear-gradient(135deg,rgba(206,147,216,0.15),rgba(171,71,188,0.08));
+  border-radius:12px;
+  margin:6px 16px;
+  border-left:3px solid rgba(171,71,188,0.3);
+}
+.submenu.active{
+  max-height:500px;
+}
+.submenu a{
+  padding:12px 20px 12px 34px;
+  font-size:14px;
+  font-weight:500;
+  margin:4px 8px;
+}
+.submenu a:hover{
+  padding-left:48px;
+}
+
+.heart-bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  overflow:hidden;z-index:0;pointer-events:none;
+}
+.heart{
+  position:absolute;bottom:-10vh;
+  color:rgba(255,255,255,0.7);
+  font-size:24px;animation:floatUp 12s linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(0.8);opacity:0}
+  20%{opacity:1}
+  100%{transform:translateY(-110vh) scale(1.2);opacity:0}
+}
+.heart:nth-child(1){left:10%;animation-delay:0s}
+.heart:nth-child(2){left:25%;animation-delay:2s}
+.heart:nth-child(3){left:40%;animation-delay:4s}
+.heart:nth-child(4){left:60%;animation-delay:6s}
+.heart:nth-child(5){left:75%;animation-delay:8s}
+.heart:nth-child(6){left:90%;animation-delay:10s}
+
+section{text-align:center;padding:80px 20px;position:relative;z-index:2}
+h1,h2{font-family:"Playfair Display",serif;color:#6a1b9a;text-shadow:0 0 15px rgba(171,71,188,0.2)}
+h1{font-size:48px;margin-bottom:20px}
+.intro-text{max-width:700px;margin:0 auto 40px;font-size:18px;line-height:1.6;color:#555}
+
+form{
+  display:flex;flex-direction:column;gap:18px;
+  max-width:480px;margin:30px auto;padding:48px;
+  border-radius:30px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.6),rgba(248,240,255,0.5));
+  box-shadow:0 10px 50px rgba(171,71,188,0.2),0 0 80px rgba(171,71,188,0.1);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(255,255,255,0.5);
+}
+label{text-align:left;color:#6a1b9a;font-weight:500}
+input,textarea,select{
+  padding:14px 18px;border:2px solid rgba(171,71,188,0.2);border-radius:16px;
+  background:rgba(255,255,255,0.9);
+  font-family:"Poppins",sans-serif;
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  font-size:15px;
+}
+input:focus,textarea:focus,select:focus{
+  outline:none;
+  border-color:#ab47bc;
+  background:rgba(255,255,255,1);
+  box-shadow:0 4px 20px rgba(171,71,188,0.3),0 0 30px rgba(171,71,188,0.1);
+  transform:scale(1.02);
+}
+button{
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  border:2px solid rgba(255,255,255,0.2);border-radius:50px;padding:16px 24px;color:#fff;
+  font-weight:600;cursor:pointer;
+  box-shadow:0 6px 25px rgba(171,71,188,0.5),0 0 40px rgba(171,71,188,0.2);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  font-size:16px;
+  position:relative;
+  overflow:hidden;
+}
+button:hover{
+  transform:scale(1.05) translateY(-2px);
+  box-shadow:0 8px 35px rgba(171,71,188,0.7),0 0 60px rgba(171,71,188,0.4);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+button::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:translate(-50%,-50%);
+  transition:width 0.6s,height 0.6s;
+}
+button:hover::before{
+  width:300px;height:300px;
+}
+.checkbox-group{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:10px;}
+.checkbox-group label{display:flex;align-items:center;gap:8px;}
+.checkbox-group input[type="checkbox"]{width:auto;}
+
+footer{text-align:center;margin:60px 0 20px;color:#555;font-size:14px}
+footer a{color:#6a1b9a}
+
+/* --- Logo branding --- */
+.logo-branding{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  z-index:1100;
+  transition:all 0.3s ease;
+  animation:logoFloat 3s ease-in-out infinite;
+  filter:drop-shadow(0 3px 10px rgba(171,71,188,0.3));
+}
+.logo-branding:hover{
+  transform:scale(1.08);
+  filter:drop-shadow(0 5px 20px rgba(171,71,188,0.5));
+}
+.logo-branding img{
+  display:block;
+  height:40px;
+  width:auto;
+}
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" id="menuButton">💜</button>
+<div class="menu" id="sideMenu">
+  <a href="index.html">Accueil</a>
+  <a href="a-propos.html">À propos</a>
+  <a href="notre-communaute.html">Notre communauté</a>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="contenu">
+      <span>Contenu</span>
+    </div>
+    <div class="submenu" id="submenu-contenu">
+      <a href="index.html#mur">Mur d'Amour</a>
+      <a href="index.html#galerie">Vos moments</a>
+      <a href="vos-creations.html">Vos créations</a>
+      <a href="anniversaires.html">Anniversaires</a>
+      <a href="watchout.html">Watchout Mag</a>
+    </div>
+  </div>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="participer">
+      <span>Participer</span>
+    </div>
+    <div class="submenu" id="submenu-participer">
+      <a href="index.html#mot">Écrire un mot</a>
+      <a href="index.html#photo">Envoyer une photo</a>
+      <a href="boite-a-idees.html">Boîte à Idées</a>
+    </div>
+  </div>
+  
+  <a href="index.html#map">Fan Map</a>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="compte">
+      <span>Compte</span>
+    </div>
+    <div class="submenu" id="submenu-compte">
+      <a href="connexion.html">Connexion</a>
+      <a href="inscription.html">Inscription</a>
+    </div>
+  </div>
+  
+  <a href="politique.html">Politique de confidentialité</a>
+</div>
+
+<!-- Logo branding -->
+<div class="logo-branding">
+  <img src="logo.svg" alt="Louane Actu">
+</div>
+
+<div class="heart-bg">
+  <div class="heart">💜</div><div class="heart">💜</div><div class="heart">💜</div>
+  <div class="heart">💜</div><div class="heart">💜</div><div class="heart">💜</div>
+</div>
+
+<section>
+  <h1>💡 Boîte à Idées</h1>
+  <p class="intro-text">Vous avez une suggestion pour améliorer le site ? Une fonctionnalité que vous aimeriez voir ? Partagez vos idées avec nous ! Vos retours nous aident à créer un espace encore plus agréable pour toute la communauté 💜</p>
+  
+  <form name="boite-a-idees" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="merci-idee.html">
+    <p hidden><label>Ne pas remplir : <input name="bot-field"></label></p>
+    <input type="hidden" name="form-name" value="boite-a-idees">
+    
+    <label for="prenom">Prénom *</label>
+    <input type="text" id="prenom" name="prenom" required>
+    
+    <label for="email">Email (optionnel)</label>
+    <input type="email" id="email" name="email" placeholder="Si vous souhaitez être contacté">
+    
+    <label for="categorie">Catégorie *</label>
+    <select id="categorie" name="categorie" required>
+      <option value="">Sélectionner une catégorie</option>
+      <option value="nouvelle-fonctionnalite">Nouvelle fonctionnalité</option>
+      <option value="amelioration">Amélioration existante</option>
+      <option value="design">Design / Apparence</option>
+      <option value="contenu">Contenu</option>
+      <option value="autre">Autre</option>
+    </select>
+    
+    <label for="idee">Votre idée ou suggestion *</label>
+    <textarea id="idee" name="idee" rows="6" required placeholder="Décrivez votre idée en détail..."></textarea>
+    
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="consentement" required> J'accepte la <a href="politique.html" target="_blank" style="color:#7b1fa2;">politique de confidentialité</a>.</label>
+    </div>
+    
+    <button type="submit">Envoyer mon idée 💜</button>
+  </form>
+</section>
+
+<footer>
+  Créé avec amour par Louane Actu 💜 — Pour la communauté, toujours.<br>
+  <a href="politique.html">Politique de confidentialité</a>
+</footer>
+
+<script>
+document.getElementById("menuButton").addEventListener("click",function(){
+  document.getElementById("sideMenu").classList.toggle("active");
+});
+
+const menuParents=document.querySelectorAll(".menu-parent");
+menuParents.forEach(parent=>{
+  parent.addEventListener("click",function(){
+    const submenuId="submenu-"+this.getAttribute("data-submenu");
+    const submenu=document.getElementById(submenuId);
+    this.classList.toggle("active");
+    submenu.classList.toggle("active");
+  });
+});
+</script>
+</body>
+</html>

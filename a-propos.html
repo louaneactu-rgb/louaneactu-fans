@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos — Louane Actu</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Poppins",sans-serif;
+  color:#1f1f1f;
+  overflow-x:hidden;
+  background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ede7f6);
+  background-size:400% 400%;
+  animation:gradientShift 20s ease infinite;
+  position:relative;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.menu-toggle{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  width:56px;
+  height:56px;
+  font-size:26px;
+  cursor:pointer;
+  z-index:1100;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 4px 20px rgba(171,71,188,0.6),0 0 40px rgba(171,71,188,0.3);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  animation:pulse 2s ease-in-out infinite;
+  backdrop-filter:blur(10px);
+  border:2px solid rgba(255,255,255,0.3);
+}
+.menu-toggle:hover{
+  transform:scale(1.15) rotate(15deg);
+  box-shadow:0 6px 30px rgba(171,71,188,1),0 0 50px rgba(171,71,188,0.5);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 4px 20px rgba(171,71,188,0.6),0 0 40px rgba(171,71,188,0.3)}
+  50%{box-shadow:0 6px 35px rgba(171,71,188,1),0 0 60px rgba(171,71,188,0.6)}
+}
+.menu{
+  position:fixed;
+  top:0;left:-280px;
+  width:280px;height:100%;
+  background:linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,240,255,0.98));
+  backdrop-filter:blur(20px);
+  box-shadow:4px 0 40px rgba(171,71,188,0.4);
+  transition:left 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  z-index:1000;
+  padding-top:90px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border-right:3px solid rgba(171,71,188,0.2);
+}
+.menu::before{
+  content:"";
+  position:absolute;
+  top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.3),transparent);
+  transition:left 0.7s;
+}
+.menu.active::before{
+  animation:shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer{
+  0%{left:-100%}
+  50%{left:100%}
+  100%{left:100%}
+}
+.menu::after{
+  content:"💜";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:120px;
+  opacity:0.08;
+  pointer-events:none;
+  z-index:-1;
+}
+.menu.active::after{
+  animation:sparkleHeart 2s ease-in-out infinite;
+}
+@keyframes sparkleHeart{
+  0%,100%{
+    filter:drop-shadow(0 0 5px rgba(171,71,188,0.3));
+    transform:translate(-50%,-50%) scale(1);
+  }
+  25%{
+    filter:drop-shadow(0 0 20px rgba(171,71,188,0.8)) drop-shadow(0 0 40px rgba(171,71,188,0.6));
+    transform:translate(-50%,-50%) scale(1.05);
+  }
+  50%{
+    filter:drop-shadow(0 0 30px rgba(171,71,188,1)) drop-shadow(0 0 60px rgba(171,71,188,0.8));
+    transform:translate(-50%,-50%) scale(1.1);
+  }
+  75%{
+    filter:drop-shadow(0 0 20px rgba(171,71,188,0.8)) drop-shadow(0 0 40px rgba(171,71,188,0.6));
+    transform:translate(-50%,-50%) scale(1.05);
+  }
+}
+.menu a{
+  display:block;
+  padding:14px 24px;
+  color:#6a1b9a;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  position:relative;
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  overflow:hidden;
+  border-radius:12px;
+  margin:4px 12px;
+}
+.menu a::before{
+  content:"✨";
+  position:absolute;
+  left:-30px;
+  opacity:0;
+  transition:all 0.3s ease;
+}
+.menu a:hover{
+  background:linear-gradient(135deg,rgba(206,147,216,0.3),rgba(171,71,188,0.2));
+  padding-left:40px;
+  transform:translateX(5px) scale(1.02);
+  color:#7b1fa2;
+  box-shadow:0 4px 15px rgba(171,71,188,0.2);
+}
+.menu a:hover::before{
+  left:15px;
+  opacity:1;
+}
+.menu.active{left:0}
+
+.menu-section{
+  position:relative;
+}
+.menu-parent{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+.menu-parent::after{
+  content:"▶";
+  font-size:10px;
+  transition:transform 0.3s ease;
+  margin-right:5px;
+}
+.menu-parent.active::after{
+  transform:rotate(90deg);
+}
+.submenu{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  background:linear-gradient(135deg,rgba(206,147,216,0.15),rgba(171,71,188,0.08));
+  border-radius:12px;
+  margin:6px 16px;
+  border-left:3px solid rgba(171,71,188,0.3);
+}
+.submenu.active{
+  max-height:500px;
+}
+.submenu a{
+  padding:12px 20px 12px 34px;
+  font-size:14px;
+  font-weight:500;
+  margin:4px 8px;
+}
+.submenu a:hover{
+  padding-left:48px;
+}
+
+.heart-bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  overflow:hidden;z-index:0;pointer-events:none;
+}
+.heart{
+  position:absolute;bottom:-10vh;
+  color:rgba(255,255,255,0.7);
+  font-size:24px;animation:floatUp 12s linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(0.8);opacity:0}
+  20%{opacity:1}
+  100%{transform:translateY(-110vh) scale(1.2);opacity:0}
+}
+.heart:nth-child(1){left:10%;animation-delay:0s}
+.heart:nth-child(2){left:25%;animation-delay:2s}
+.heart:nth-child(3){left:40%;animation-delay:4s}
+.heart:nth-child(4){left:60%;animation-delay:6s}
+.heart:nth-child(5){left:75%;animation-delay:8s}
+.heart:nth-child(6){left:90%;animation-delay:10s}
+
+section{
+  text-align:center;
+  padding:80px 20px;
+  position:relative;
+  z-index:2;
+  max-width:800px;
+  margin:0 auto;
+}
+h1,h2{
+  font-family:"Playfair Display",serif;
+  color:#6a1b9a;
+  text-shadow:0 0 15px rgba(171,71,188,0.2);
+  margin-bottom:30px;
+}
+h2{
+  font-size:28px;
+  margin-top:50px;
+  margin-bottom:20px;
+}
+p{
+  line-height:1.8;
+  font-size:17px;
+  margin-bottom:20px;
+  text-align:left;
+}
+.content-box{
+  background:linear-gradient(135deg,rgba(255,255,255,0.6),rgba(248,240,255,0.5));
+  backdrop-filter:blur(20px);
+  padding:48px;
+  border-radius:30px;
+  box-shadow:0 10px 50px rgba(171,71,188,0.2),0 0 80px rgba(171,71,188,0.1);
+  margin-bottom:30px;
+  border:2px solid rgba(255,255,255,0.5);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+.content-box:hover{
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 12px 60px rgba(171,71,188,0.25),0 0 100px rgba(171,71,188,0.15);
+}
+ul{
+  text-align:left;
+  line-height:2;
+  font-size:17px;
+  margin:20px 0;
+  padding-left:30px;
+}
+li{
+  margin-bottom:10px;
+}
+.btn{
+  background:linear-gradient(135deg,#ab47bc,#7b1fa2,#9c27b0);
+  padding:16px 40px;
+  border-radius:50px;
+  color:#fff;
+  font-weight:600;
+  box-shadow:0 6px 25px rgba(171,71,188,0.5),0 0 40px rgba(171,71,188,0.2);
+  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+  margin-top:40px;
+  display:inline-block;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  border:2px solid rgba(255,255,255,0.2);
+}
+.btn:hover{
+  transform:scale(1.08) translateY(-2px);
+  box-shadow:0 8px 35px rgba(171,71,188,0.7),0 0 60px rgba(171,71,188,0.4);
+  background:linear-gradient(135deg,#ce93d8,#ab47bc,#7b1fa2);
+}
+.btn::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:translate(-50%,-50%);
+  transition:width 0.6s,height 0.6s;
+}
+.btn:hover::before{
+  width:300px;height:300px;
+}
+
+footer{
+  text-align:center;
+  margin:60px 0 20px;
+  color:#555;
+  font-size:14px;
+}
+footer a{color:#6a1b9a}
+
+/* --- Logo branding --- */
+.logo-branding{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  z-index:1100;
+  transition:all 0.3s ease;
+  animation:logoFloat 3s ease-in-out infinite;
+  filter:drop-shadow(0 3px 10px rgba(171,71,188,0.3));
+}
+.logo-branding:hover{
+  transform:scale(1.08);
+  filter:drop-shadow(0 5px 20px rgba(171,71,188,0.5));
+}
+.logo-branding img{
+  display:block;
+  height:40px;
+  width:auto;
+}
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" id="menuButton">💜</button>
+<div class="menu" id="sideMenu">
+  <a href="index.html">Accueil</a>
+  <a href="a-propos.html">À propos</a>
+  <a href="notre-communaute.html">Notre communauté</a>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="contenu">
+      <span>Contenu</span>
+    </div>
+    <div class="submenu" id="submenu-contenu">
+      <a href="index.html#mur">Mur d'Amour</a>
+      <a href="index.html#galerie">Vos moments</a>
+      <a href="vos-creations.html">Vos créations</a>
+      <a href="anniversaires.html">Anniversaires</a>
+      <a href="watchout.html">Watchout Mag</a>
+    </div>
+  </div>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="participer">
+      <span>Participer</span>
+    </div>
+    <div class="submenu" id="submenu-participer">
+      <a href="index.html#mot">Écrire un mot</a>
+      <a href="index.html#photo">Envoyer une photo</a>
+      <a href="boite-a-idees.html">Boîte à Idées</a>
+    </div>
+  </div>
+  
+  <a href="index.html#map">Fan Map</a>
+  
+  <div class="menu-section">
+    <div class="menu-parent" data-submenu="compte">
+      <span>Compte</span>
+    </div>
+    <div class="submenu" id="submenu-compte">
+      <a href="connexion.html">Connexion</a>
+      <a href="inscription.html">Inscription</a>
+    </div>
+  </div>
+  
+  <a href="politique.html">Politique de confidentialité</a>
+</div>
+
+<!-- Logo branding -->
+<div class="logo-branding">
+  <img src="logo.svg" alt="Louane Actu">
+</div>
+
+<div class="heart-bg">
+  <div class="heart">💜</div><div class="heart">💜</div><div class="heart">💜</div>
+  <div class="heart">💜</div><div class="heart">💜</div><div class="heart">💜</div>
+</div>
+
+<section>
+  <h1>L'histoire de Louane Actu — 10 ans de passion et de partage</h1>
+  
+  <div class="content-box">
+    <p>Il y a plusieurs années, Louane Actu n'était qu'un simple compte fan parmi tant d'autres.
+Un espace né d'une admiration sincère pour une artiste qui, par sa musique et sa lumière, a touché des milliers de cœurs.</p>
+    <p>À l'époque, je n'imaginais pas une seule seconde que ce compte allait devenir une véritable source d'actualité sur Louane.
+Petit à petit, à force de travail, de veille et de passion, Louane Actu est devenu un rendez-vous incontournable pour les fans, un lieu où chaque nouveauté, chaque concert, chaque projet trouve sa place.</p>
+    <p>Mais derrière les publications et les stories, il y a eu surtout une aventure humaine.
+Des années de concours, d'échanges, de messages, de rires, de surprises, et d'émotions partagées.
+J'ai eu la chance d'organiser des dizaines de concours, d'offrir des places de concerts, de festivals, de cinéma, du merch officiel, et même de collaborer avec des radios pour gâter la communauté.</p>
+    <p>Tout cela, je l'ai toujours fait avec une seule idée en tête :</p>
+    <p style="font-style:italic;margin-left:20px;border-left:3px solid #ab47bc;padding-left:20px;">❤️ Créer du lien entre Louane et ceux qui la soutiennent depuis le début.</p>
+  </div>
+
+  <div class="content-box">
+    <h2>🌟 Et aujourd'hui…</h2>
+    <p>Ce site est l'aboutissement naturel de cette aventure.
+Un espace que j'ai voulu différent, doux et humain, loin des réseaux sociaux et de la rapidité du quotidien.
+Un lieu pour les fans, pensé avec le cœur.</p>
+    <p>Ici, vous pouvez :</p>
+    <ul>
+      <li>💌 Écrire un mot à Louane,</li>
+      <li>📷 Partager vos souvenirs,</li>
+      <li>🌍 Découvrir la Fan Map,</li>
+      <li>📰 Feuilleter le magazine Watchout Mag,</li>
+      <li>💡 Proposer vos idées pour faire évoluer ce cocon ensemble.</li>
+    </ul>
+    <p>C'est plus qu'un site, c'est notre espace commun, celui où chaque mot, chaque photo, chaque sourire a sa place.</p>
+  </div>
+
+  <div class="content-box">
+    <h2>💖 Merci</h2>
+    <p>Merci à tous ceux qui ont soutenu, participé, commenté, partagé, depuis le premier jour.
+Merci pour chaque message, chaque idée, chaque encouragement.
+Et surtout, merci à Louane — pour la musique, la sincérité, la lumière qu'elle apporte depuis toutes ces années.</p>
+    <p>Le plus beau reste à venir. 💫</p>
+    <p style="text-align:right;font-style:italic;">— Louane Actu</p>
+  </div>
+
+  <a href="index.html" class="btn">Retour à l'accueil</a>
+</section>
+
+<footer>
+  Créé avec amour par Louane Actu 💜 — Pour la communauté, toujours.
+</footer>
+
+<script>
+document.getElementById("menuButton").addEventListener("click",function(){
+  document.getElementById("sideMenu").classList.toggle("active");
+});
+
+const menuParents=document.querySelectorAll(".menu-parent");
+menuParents.forEach(parent=>{
+  parent.addEventListener("click",function(){
+    const submenuId="submenu-"+this.getAttribute("data-submenu");
+    const submenu=document.getElementById(submenuId);
+    this.classList.toggle("active");
+    submenu.classList.toggle("active");
+  });
+});
+</script>
+</body>
+</html>

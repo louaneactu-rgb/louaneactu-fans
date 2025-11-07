@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription — Espace Fans 💜</title>
+
+  <style>
+    body {
+      background-color: #f7e6ff;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      color: #4b006e;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 25px;
+    }
+
+    button {
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      padding: 14px 25px;
+      margin: 10px;
+      font-size: 1em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #732d91;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #5a2e7f;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>💜 Inscription — Espace Fans 💜</h1>
+  <h2>Crée ton compte pour rejoindre la communauté Louane Actu 💜</h2>
+
+  <button id="signup-button">Créer un compte 💜</button>
+  <button id="login-button">Se connecter</button>
+
+  <div class="footer">
+    <p>Déjà inscrit ? Clique sur “Se connecter” pour accéder à ton espace.</p>
+  </div>
+
+  <!-- Auth0 SDK -->
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const auth0 = await createAuth0Client({
+        domain: "dev-bsj501o0317kud5u.us.auth0.com",
+        client_id: "8JFD5FzNnp30XQjCNsDc9FzZruPy2jLA",
+        authorizationParams: {
+          redirect_uri: window.location.origin
+        }
+      });
+
+      // --- Créer un compte ---
+      const signupButton = document.querySelector("#signup-button");
+      if (signupButton) {
+        signupButton.addEventListener("click", async () => {
+          await auth0.loginWithRedirect({
+            authorizationParams: {
+              screen_hint: "signup"
+            }
+          });
+        });
+      }
+
+      // --- Connexion ---
+      const loginButton = document.querySelector("#login-button");
+      if (loginButton) {
+        loginButton.addEventListener("click", async () => {
+          await auth0.loginWithRedirect();
+        });
+      }
+
+      // --- Retour après redirection ---
+      if (window.location.search.includes("code=") && window.location.search.includes("state=")) {
+        await auth0.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/");
+      }
+
+      // --- Affiche le profil si connecté ---
+      const user = await auth0.getUser();
+      if (user) {
+        document.body.innerHTML = `
+          <h1>💜 Bienvenue ${user.name || "Fan"} 💜</h1>
+          <p>Tu fais maintenant partie de la communauté Louane Actu !</p>
+          <button id="logout-button">Se déconnecter</button>
+        `;
+
+        const logoutButton = document.querySelector("#logout-button");
+        logoutButton.addEventListener("click", () => {
+          auth0.logout({ logoutParams: { returnTo: window.location.origin } });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
