@@ -1,8 +1,9 @@
+// --- Configuration Auth0 ---
 const auth0Config = {
   domain: "dev-bsj501o0317kud5u.us.auth0.com",
   clientId: "8JFDSFzNnp30XQjCNsDc9FzZruPy2jLA",
   authorizationParams: {
-    redirect_uri: window.location.origin + "/index.html"
+    redirect_uri: window.location.origin  // ✅ fonctionne sur Vercel et en local
   },
   cacheLocation: 'localstorage',
   useRefreshTokens: true
@@ -10,88 +11,74 @@ const auth0Config = {
 
 let auth0Client = null;
 
+// --- Vérification de la config ---
 function validateAuth0Config() {
-  const errors = [];
-  
-  if (!auth0Config.domain) {
-    errors.push("Auth0 domain is missing");
+  if (!auth0Config.domain || !auth0Config.clientId) {
+    throw new Error("❌ Auth0 configuration incorrecte. Vérifie ton domaine et ton Client ID.");
   }
-  
-  if (!auth0Config.clientId) {
-    errors.push("Auth0 client ID is missing");
-  }
-  
-  if (errors.length > 0) {
-    throw new Error("Auth0 configuration error: " + errors.join(", "));
-  }
-  
-  console.log("Auth0 config validated successfully");
-  console.log("Redirect URI:", auth0Config.authorizationParams.redirect_uri);
+  console.log("✅ Auth0 configuration validée");
 }
 
+// --- Initialisation du client Auth0 ---
 async function initAuth0() {
   if (!auth0Client) {
-    if (typeof auth0 === 'undefined') {
-      throw new Error('Auth0 SDK not loaded. Please check if the script is properly loaded.');
+    if (typeof auth0 === "undefined") {
+      throw new Error("Auth0 SDK non chargé. Vérifie le script <script src='https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js'></script>");
     }
-    
+
     validateAuth0Config();
-    
+
     try {
       auth0Client = await auth0.createAuth0Client(auth0Config);
-      console.log("Auth0 client initialized successfully");
+      console.log("✅ Client Auth0 initialisé");
     } catch (error) {
-      console.error("Failed to initialize Auth0 client:", error);
-      throw new Error("Impossible d'initialiser Auth0: " + error.message);
+      console.error("Erreur d'initialisation Auth0:", error);
+      alert("Impossible d'initialiser la connexion : " + error.message);
     }
   }
   return auth0Client;
 }
 
+// --- Connexion ---
 async function login() {
   try {
-    console.log("Starting login process...");
     const client = await initAuth0();
-    console.log("Redirecting to Auth0 login...");
     await client.loginWithRedirect({
       authorizationParams: {
-        redirect_uri: window.location.origin + "/index.html"
-      }
+        redirect_uri: window.location.origin,
+      },
     });
   } catch (error) {
-    console.error('Erreur lors de la connexion:', error);
-    alert('❌ Une erreur s\'est produite lors de la connexion: ' + error.message);
-    throw error;
+    alert("Erreur de connexion : " + error.message);
   }
 }
 
+// --- Inscription ---
 async function signup() {
   try {
-    console.log("Starting signup process...");
     const client = await initAuth0();
-    console.log("Redirecting to Auth0 signup...");
     await client.loginWithRedirect({
       authorizationParams: {
-        redirect_uri: window.location.origin + "/index.html",
-        screen_hint: 'signup'
-      }
+        redirect_uri: window.location.origin,
+        screen_hint: "signup",
+      },
     });
   } catch (error) {
-    console.error('Erreur lors de l\'inscription:', error);
-    alert('❌ Une erreur s\'est produite lors de la création du compte: ' + error.message);
-    throw error;
+    alert("Erreur d’inscription : " + error.message);
   }
 }
 
+// --- Déconnexion ---
 async function logout() {
   const client = await initAuth0();
   await client.logout({
     logoutParams: {
-      returnTo: window.location.origin + "/index.html"
-    }
+      returnTo: window.location.origin,
+    },
   });
 }
 
+// --- Récupération utilisateur ---
 async function getUser() {
   const client = await initAuth0();
   const isAuthenticated = await client.isAuthenticated();
@@ -101,51 +88,40 @@ async function getUser() {
   return null;
 }
 
-async function isAuthenticated() {
-  const client = await initAuth0();
-  return await client.isAuthenticated();
-}
-
+// --- Gestion du retour de connexion ---
 async function handleRedirectCallback() {
   const client = await initAuth0();
-  
   if (window.location.search.includes("code=") && window.location.search.includes("state=")) {
     try {
       await client.handleRedirectCallback();
       window.history.replaceState({}, document.title, window.location.pathname);
     } catch (error) {
-      console.error("Error handling redirect callback:", error);
+      console.error("Erreur lors du retour Auth0:", error);
     }
   }
 }
 
+// --- Mise à jour de l’interface selon connexion ---
 async function updateUIBasedOnAuth() {
-  const authenticated = await isAuthenticated();
-  const accountLinks = document.querySelectorAll('a[href="connexion.html"], a[href="inscription.html"]');
-  const accountMenu = document.querySelector('.submenu#submenu-compte');
-  
-  if (authenticated) {
+  const authenticated = await (await initAuth0()).isAuthenticated();
+  const accountMenu = document.querySelector(".submenu#submenu-compte");
+
+  if (authenticated && accountMenu) {
     const user = await getUser();
-    
-    if (accountMenu) {
-      accountMenu.innerHTML = `
-        <a href="profil.html">👤 Mon profil</a>
-        <a href="#" id="logout-btn">Déconnexion</a>
-      `;
-      
-      const logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', async (e) => {
-          e.preventDefault();
-          await logout();
-        });
-      }
-    }
+    accountMenu.innerHTML = `
+      <a href="profil.html">👤 Mon profil</a>
+      <a href="#" id="logout-btn">Déconnexion</a>
+    `;
+    document.getElementById("logout-btn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      await logout();
+    });
   }
 }
 
-if (typeof window !== 'undefined') {
-  window.addEventListener('DOMContentLoaded', async () => {
+// --- Initialisation globale ---
+if (typeof window !== "undefined") {
+  window.addEventListener("DOMContentLoaded", async () => {
     await handleRedirectCallback();
     await updateUIBasedOnAuth();
   });
